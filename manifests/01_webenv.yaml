@@ -1,15 +1,13 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  labels:
-    app: webenv
-    version: v1
   name: webenv
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: webenv
+      version: v1
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -19,6 +17,7 @@ spec:
     metadata:
       labels:
         app: webenv
+        version: v1
     spec:
       containers:
       - image: webenv:0.1.0
@@ -37,7 +36,6 @@ kind: Service
 metadata:
   labels:
     app: webenv
-    version: v1
   name: webenv
 spec:
   type: ClusterIP
