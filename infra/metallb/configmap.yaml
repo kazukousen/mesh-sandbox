@@ -8,6 +8,6 @@ data:
     address-pools:
     - name: default
       protocol: layer2
-      addresses:
-      - 192.168.1.2-192.168.1.254
+      addresses: # `$ docker network inspect bridge | jq .[0].IPAM.Config[0].Subnet`
+      - 172.17.255.1-172.17.255.250
 
