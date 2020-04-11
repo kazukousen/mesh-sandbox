@@ -6,6 +6,17 @@ $ kind create cluster --name meshbox --config infra/kind/cluster.yaml
 $ kind get kubeconfig --name meshbox > infra/kind/kubeconfig
 ```
 
+## Contour
+
+```console
+$ kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+$ kubectl patch ds -n projectcontour envoy -p="$(cat infra/contour/patch-contour-envoy.yaml)" --dry-run=client -o yaml | kubectl apply -f -
+```
+
+contour をインストール。  
+Control Plane ノードのみに countour のL7プロキシ本体である envoy が立ち上がるようにパッチを当てる。  
+
+
 ## MetalLB
 
 [docs](https://metallb.universe.tf/installation/#installation-with-kubernetes-manifests)
@@ -29,7 +40,16 @@ $ kubectl apply -f infra/metallb/configmap.yaml
 
 ```console
 $ istioctl manifest apply --set profile=demo
+$ kubectl label ns default istio-injection=enabled
 ```
+
+```console
+$ kubectl -n istio-system patch svc istio-ingressgateway --type=json \
+-p="$(cat infra/istio/patch-istio-ingressgateway.json)" --dry-run=client -o yaml | kubectl apply -f -
+```
+
+`istio-ingressgateway` にパッチを当てる。  
+Service の type を LoadBalancer から NodePort に変更する。  
 
 ## Dashboard
 
