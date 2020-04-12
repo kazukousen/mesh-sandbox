@@ -3,15 +3,31 @@
 
 ```console
 $ kind create cluster --name meshbox --config infra/kind/cluster.yaml
+```
+
+Dcoker for Desktop (Mac) では、 docker コンテナとホストOSが疎通するためには `--port` オプションによるポートマッピングが必要。  
+Dockerコンテナでノードを構成する Kind では、クラスタ作成時に、疎通したいノードに対しポートマッピングの設定をしておく。  
+
+今回は Control Plane ノードの :80, :443 をホストOSとポートマッピングする。  
+
+```console
 $ kind get kubeconfig --name meshbox > infra/kind/kubeconfig
 ```
 
 ## Contour
 
-contour をインストール。  
+https://kind.sigs.k8s.io/docs/user/ingress/
+
+Ingress Controller 実装である [contour](https://projectcontour.io/) を使っていく。  
 
 ```console
 $ kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+```
+contour をインストール。  
+このマニフェストは、 namespace `projectcountour` に、  
+envoy を Workload は DaemonSet でデプロイし、コントローラである contour を Workload は Deployment で 2 replicas デプロイする。  
+
+```console
 $ kubectl patch ds -n projectcontour envoy -p="$(cat infra/contour/patch-contour-envoy.yaml)"
 ```
 Control Plane ノードのみに countour のL7プロキシ本体である envoy が立ち上がるようにパッチを当てる。  
@@ -31,8 +47,8 @@ contour のコントローラは、 Ingress リソースに反応し、 envoy �
 ...oO(
 このやり方だと外部公開トラフィックを SPOF な DaemonSet で受け取ることになるし、
 しかも Control Plane のネットワークを外部公開トラフィックに使ってしまうと Kubernetes クラスタの制御に影響を及ばすので、
-まずこんな構成はプロダクションレベルとは全然違うなって感じ。
-ローカルでの検証だけに用途を限定した構成ってことで。
+まずこんな構成ではプロダクションレディとはいえないだろーなって感じ。
+検証用途での最低限の構成ってことで。
 ```
 
 ## Istio
