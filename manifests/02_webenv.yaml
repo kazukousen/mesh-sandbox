@@ -109,7 +109,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
     targetPort: 8080
     name: http-webenv
@@ -128,7 +128,7 @@ spec:
     istio: ingressgateway
   servers:
   - port:
-      number: 8080
+      number: 80
       name: http-webenv
       protocol: HTTP
     hosts:
@@ -163,7 +163,7 @@ metadata:
   namespace: webenv
 spec:
   hosts:
-  - webenv
+  - "*"
   gateways:
   - webenv
   http:
@@ -172,11 +172,12 @@ spec:
         host: webenv
         subset: v1
         port:
-          number: 8080
+          number: 80
       weight: 90
     - destination:
         host: webenv
         subset: v2
         port:
-          number: 8080
+          number: 80
       weight: 10
+
