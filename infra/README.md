@@ -86,13 +86,14 @@ contour のコントローラは、 Ingress リソースに反応し、 envoy �
 ## Istio
 
 ```console
-$ istioctl manifest apply --set profile=demo
+$ istioctl manifest apply --set profile=default --set values.prometheus.enabled=false
 ```
 
-`profile=demo` は全部入り。  
+default は `istio-ingressgateway` と Prometheus が有効になっている。 Prometheus は別で入れたいので無効にする。  
+
 
 `istiod` は memory の requests が 2Gi に設定されてるので、  
-insuffient memory になっちゃったことがあった。節約したいときは edit するといいかも。  
+`insuffient memory` になっちゃったことがあった。節約したいときは edit するといいかも。  
 
 ```console
 $ kubectl patch svc istio-ingressgateway -n istio-system --type json -p "$(cat infra/istio/patch-istio-ingressgateway.json)"
