@@ -14,6 +14,38 @@ Dockerコンテナでノードを構成する Kind では、クラスタ作成�
 $ kind get kubeconfig --name meshbox > infra/kind/kubeconfig
 ```
 
+## Metrics-Server
+
+```console
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+```
+
+`kubectl top nodes|pods` コマンドがうまくいくはずが・・・  
+
+```console
+$ kubectl get po -n kube-system | grep metrics-server | awk '{print $1}'
+$ kubectl logs -f metrics-server-XXXXXXX -n kube-system
+```
+
+`no such host` 的なエラーがでた。  
+Issue を参照。  
+https://github.com/kubernetes-sigs/metrics-server/issues/131
+
+```console
+$ kubectl edit deploy metrics-server -n kube-system
+```
+
+`metrics-server` へ渡すコマンドライン引数を追加。  
+
+```yaml
+        args:
+        - --kubelet-insecure-tls
+        - --kubelet-preferred-address-types=InternalIP
+```
+
+起動後すぐは `unable to fetch node metrics for node "XXX": no metrics known for node` と出るが、ちょっと待てばOK.  
+
+
 ## Contour
 
 https://kind.sigs.k8s.io/docs/user/ingress/
@@ -59,6 +91,9 @@ $ istioctl manifest apply --set profile=demo
 
 `profile=demo` は全部入り。  
 
+`istiod` は memory の requests が 2Gi に設定されてるので、  
+insuffient memory になっちゃったことがあった。節約したいときは edit するといいかも。  
+
 ```console
 $ kubectl patch svc istio-ingressgateway -n istio-system --type json -p "$(cat infra/istio/patch-istio-ingressgateway.json)"
 ```
@@ -69,7 +104,7 @@ Service `istio-ingressgateway` は type が `LoadBalancer` になっているが
 ## Dashboard
 
 ```console
-$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc5/aio/deploy/recommended.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
 $ kubectl create sa k8s-admin -n kube-system
 $ kubectl create clusterrolebinding k8s-admin --clusterrole cluster-admin --serviceaccount=kube-system:k8s-admin
 $ kubectl describe secret $(kubectl get secret -n kube-system | grep k8s-admin | awk '{print $1}') -n kube-system | grep token: | awk '{print $2}'
