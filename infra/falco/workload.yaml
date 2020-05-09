@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: falco
+  namespace: monitoring
+  labels:
+    app: falco
+spec:
+  selector:
+    matchLabels:
+      app: falco
+  template:
+    metadata:
+      labels:
+        app: falco
+    spec:
+      serviceAccount: falco
+      containers:
+      - name: falco
+        image: sysdig/falco:latest
+        securityContext:
+          privileged: true
+        args:
+        - /usr/bin/falco
+        - -K
+        - /var/run/secrets/kubernetes.io/serviceaccount/token
+        - -k
+        - https://kubernetes
+        - -pk
+        - -U
+        volumeMounts:
+        - name: docker-socket
+          mountPath: /host/var/run/docker.sock
+          readOnly: true
+        - name: dev-fs
+          mountPath: /host/dev
+          readOnly: true
+        - name: proc-fs
+          mountPath: /host/proc
+          readOnly: true
+        - name: usr-fs
+          mountPath: /host/usr
+          readOnly: true
+        - name: boot-fs
+          mountPath: /host/boot
+          readOnly: true
+        - name: lib-modules
+          mountPath: /host/lib/modules
+          readOnly: true
+        - name: falco-config
+          mountPath: /etc/falco
+      volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      - name: dev-fs
+        hostPath:
+          path: /dev
+      - name: proc-fs
+        hostPath:
+          path: /proc
+      - name: boot-fs
+        hostPath:
+          path: /boot
+      - name: usr-fs
+        hostPath:
+          path: /usr
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: falco-config
+        configMap:
+          name: falco
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco
+  namespace: monitoring
+data:
+  falco.yaml: |
+    rules_file:
+    - /etc/falco/falco_rules.yaml
+    json_output: true
+    json_include_output_property: true
+    log_stderr: true
+    log_syslog: true
+    log_level: info
+    priority: debug
+    buffered_outputs: true
+    outouts:
+      rate: 1
+      max_burst: 1000
+    syslog_output:
+      enabled: true
+    stdout_output:
+      enabled: true
+
+  falco_rules.yaml: |
+    - macro: open_write
+      condition: (evt.type=open or evt.type=openat) and evt.is_open_write=true and fd.typechar='f' and fd.num>=0
