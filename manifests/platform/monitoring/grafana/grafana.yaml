@@ -40,9 +40,21 @@ spec:
           disableDeletion: false
           editable: true
           options:
-            path: /var/lib/grafana/dashboards
+            path: /var/lib/grafana/dashboards/server
+        - name: 'k8s'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/k8s
     extraConfigmapMounts:
-    - name: dashboard-configmap
-      configMap: grafana-dashboard
-      mountPath: /var/lib/grafana/dashboards
+    - name: dashboard-server-configmap
+      configMap: grafana-dashboard-server
+      mountPath: /var/lib/grafana/dashboards/server
+      readOnly: true
+    - name: dashboard-k8s-configmap
+      configMap: grafana-dashboard-k8s
+      mountPath: /var/lib/grafana/dashboards/k8s
       readOnly: true
