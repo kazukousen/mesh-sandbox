@@ -472,13 +472,19 @@ data:
               "interval": "",
               "legendFormat": "{{daemonset}}.{{namespace}}",
               "refId": "A"
+            },
+            {
+              "expr": "kube_statefulset_replicas",
+              "interval": "",
+              "legendFormat": "{{statefulset}}.{{namespace}}",
+              "refId": "B"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "DaemonSet desired",
+          "title": "Daemon/StatefulSet desired",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -494,6 +500,7 @@ data:
           },
           "yaxes": [
             {
+              "$$hashKey": "object:169",
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -502,6 +509,7 @@ data:
               "show": true
             },
             {
+              "$$hashKey": "object:170",
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -568,13 +576,19 @@ data:
               "interval": "",
               "legendFormat": "{{daemonset}}.{{namespace}}",
               "refId": "A"
+            },
+            {
+              "expr": "kube_statefulset_status_replicas_current",
+              "interval": "",
+              "legendFormat": "{{statefulset}}.{{namespace}}",
+              "refId": "B"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "DaemonSet non-availables",
+          "title": "Daemon/StatefulSet unavailables",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -590,6 +604,7 @@ data:
           },
           "yaxes": [
             {
+              "$$hashKey": "object:315",
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -598,6 +613,7 @@ data:
               "show": true
             },
             {
+              "$$hashKey": "object:316",
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -718,7 +734,7 @@ data:
         "list": []
       },
       "time": {
-        "from": "now-6h",
+        "from": "now-15m",
         "to": "now"
       },
       "timepicker": {
