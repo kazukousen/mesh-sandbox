@@ -19,3 +19,6 @@ spec:
       port: 8080
     rbac:
       create: true
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8080"
