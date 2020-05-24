@@ -1,0 +1,57 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  helmVersion: v3
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    name: prometheus
+    version: 11.3.0
+  values:
+    rbac:
+      create: true
+    serviceAccounts:
+      alertmanager:
+        create: true
+      nodeExporter:
+        create: true
+      pushgateway:
+        create: false
+      server:
+        create: true
+    alertmanager:
+      persistentVolume:
+        enabled: false
+    configmapReload:
+      prometheus:
+        enabled: true
+        name: configmap-reload
+    kubeStateMetrics:
+      enabled: false
+    nodeExporter:
+      enabled: true
+      resources:
+        limits:
+          cpu: 200m
+          memory: 50Mi
+        requests:
+          cpu: 100m
+          memory: 30Mi
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+      labels: {}
+      clusterIP: None
+      hostPort: 9100
+      servicePort: 9100
+      type: ClusterIP
+    server:
+      enabled: true
+      image:
+        repository: prom/prometheus
+        tag: v2.18.1
+        pullPolicy: IfNotPresent
+      persistentVolume:
+        enabled: false
