@@ -1,0 +1,21 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: chaoskube
+  namespace: monitoring
+spec:
+  helmVersion: v3
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    name: chaoskube
+    version: 3.1.4
+  values:
+    # namespaces: "!kube-system"
+    dryRun: false
+    debug: false
+    interval: 30s # m = min., s = sec.
+    metrics:
+      enabled: true
+      port: 8080
+    rbac:
+      create: true
