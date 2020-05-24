@@ -578,7 +578,7 @@ data:
               "refId": "A"
             },
             {
-              "expr": "kube_statefulset_status_replicas_current",
+              "expr": "kube_statefulset_replicas - kube_statefulset_status_replicas_current",
               "interval": "",
               "legendFormat": "{{statefulset}}.{{namespace}}",
               "refId": "B"
