@@ -1,0 +1,16 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring
+spec:
+  helmVersion: v3
+  chart:
+    repository: https://grafana.github.io/loki/charts
+    name: loki
+    version: 0.29.0
+  values:
+    image:
+      repository: grafana/loki
+      tag: 1.5.0
+      pullPolicy: IfNotPresent
