@@ -425,8 +425,8 @@ data:
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
-            "w": 12,
+            "h": 6,
+            "w": 24,
             "x": 0,
             "y": 14
           },
@@ -525,106 +525,8 @@ data:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 12,
-            "y": 14
-          },
-          "hiddenSeries": false,
-          "id": 16,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "(1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes))",
-              "interval": "",
-              "legendFormat": "{{kubernetes_node}}",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "memory swap rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1259",
-              "format": "percentunit",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1260",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": null,
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
             "x": 0,
-            "y": 22
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 18,
@@ -722,7 +624,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 22
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 20,
@@ -820,7 +722,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 30
+            "y": 28
           },
           "hiddenSeries": false,
           "id": 22,
@@ -920,7 +822,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 30
+            "y": 28
           },
           "hiddenSeries": false,
           "id": 24,
@@ -1020,7 +922,7 @@ data:
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 38
+            "y": 36
           },
           "hiddenSeries": false,
           "id": 26,
@@ -1120,7 +1022,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 44
+            "y": 42
           },
           "hiddenSeries": false,
           "id": 28,
@@ -1220,7 +1122,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 44
+            "y": 42
           },
           "hiddenSeries": false,
           "id": 30,
@@ -1320,7 +1222,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 52
+            "y": 50
           },
           "hiddenSeries": false,
           "id": 32,
@@ -1420,7 +1322,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 52
+            "y": 50
           },
           "hiddenSeries": false,
           "id": 34,
@@ -1518,7 +1420,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 60
+            "y": 58
           },
           "hiddenSeries": false,
           "id": 36,
@@ -1618,7 +1520,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 60
+            "y": 58
           },
           "hiddenSeries": false,
           "id": 38,
