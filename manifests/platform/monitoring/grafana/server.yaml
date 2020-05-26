@@ -361,9 +361,9 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by(cpu) (rate(node_cpu_seconds_total{mode!=\"idle\"}[2m]))",
+              "expr": "sum by(cpu, kubernetes_node) (rate(node_cpu_seconds_total{mode!=\"idle\"}[2m]))",
               "interval": "",
-              "legendFormat": "{{cpu}}",
+              "legendFormat": "{{cpu}}.{{kubernetes_node}}",
               "refId": "A"
             }
           ],

@@ -52,8 +52,10 @@ data:
             "current": true,
             "max": true,
             "min": false,
-            "rightSide": true,
+            "rightSide": false,
             "show": true,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
             "values": true
           },
