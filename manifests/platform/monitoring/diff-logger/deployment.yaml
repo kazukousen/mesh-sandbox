@@ -1,0 +1,41 @@
+# https://raw.githubusercontent.com/grafana/kubernetes-diff-logger/master/deployment/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: kube-diff-logger
+  name: kube-diff-logger
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kube-diff-logger
+  template:
+    metadata:
+      labels:
+        name: kube-diff-logger
+    spec:
+      containers:
+      - name: kube-diff-logger
+        command:
+        - /app/app
+        - -config=/etc/kube-diff-logger/config.yml
+        - -log-added=true
+        - -log-deleted=true
+        image: grafana/kubernetes-diff-logger:0.0.4
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        volumeMounts:
+        - mountPath: /etc/kube-diff-logger
+          name: kube-diff-logger
+      serviceAccountName: kube-diff-logger
+      volumes:
+      - configMap:
+          name: kube-diff-logger
+        name: kube-diff-logger

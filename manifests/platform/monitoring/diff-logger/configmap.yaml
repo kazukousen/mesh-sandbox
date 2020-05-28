@@ -1,0 +1,15 @@
+# https://raw.githubusercontent.com/grafana/kubernetes-diff-logger/master/deployment/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-diff-logger
+  namespace: monitoring
+data:
+  config.yml: |
+    differs:
+    - nameFilter: "*"
+      type: "deployment"
+    - nameFilter: "*"
+      type: "statefulset"
+    - nameFilter: "*"
+      type: "daemonset"
