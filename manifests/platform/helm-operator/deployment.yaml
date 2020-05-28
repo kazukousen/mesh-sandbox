@@ -6,7 +6,7 @@ metadata:
   name: helm-operator
   namespace: kube-system
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name: helm-operator

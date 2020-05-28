@@ -10,10 +10,11 @@ spec:
     name: chaoskube
     version: 3.1.4
   values:
-    # namespaces: "!kube-system"
+    namespaces: "!monitoring"
     dryRun: false
     debug: false
-    interval: 30s # m = min., s = sec.
+    interval: 2m # m = min., s = sec.
+    logFormat: json
     metrics:
       enabled: true
       port: 8080

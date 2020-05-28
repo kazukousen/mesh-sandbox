@@ -20,3 +20,59 @@ spec:
       serviceScheme: http
     pipelineStages:
     - docker: {}
+    - match:
+        selector: '{job="monitoring/monitoring-chaoskube"}'
+        stages:
+        - json:
+            expressions:
+              target_name: name
+              target_namespace: namespace
+              msg: msg
+              timestamp: time
+        - timestamp:
+            format: RFC3339
+            source: timestamp
+        - labels:
+            target_name: ""
+            target_namespace: ""
+        - output:
+            source: msg
+    - match:
+        selector: '{name="kube-diff-logger"}'
+        stages:
+        - json:
+            expressions:
+              diff_name: name
+              diff_namespace: namespace
+              diff_type: type
+              diff_verb: verb
+              notes: notes
+              timestamp: timestamp
+        - timestamp:
+            format: RFC3339
+            source: timestamp
+        - labels:
+            diff_name: ""
+            diff_namespace: ""
+            diff_type: ""
+            diff_verb: ""
+        - output:
+            source: notes
+    - match:
+        selector: '{job="stackdriver-webhook-bridge"}'
+        stages:
+        - json:
+            expressions:
+              verb: verb
+              user: user
+              requestURI: requestURI
+              ts: ts
+        - timestamp:
+            format: RFC3339
+            source: ts
+        - labels:
+            event_verb: verb
+            event_user: user
+            event_uri: requestURI
+
+

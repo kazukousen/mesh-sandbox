@@ -40,7 +40,7 @@ data:
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
-            "w": 24,
+            "w": 12,
             "x": 0,
             "y": 0
           },
@@ -52,7 +52,7 @@ data:
             "current": true,
             "max": true,
             "min": false,
-            "rightSide": true,
+            "rightSide": false,
             "show": true,
             "sort": "current",
             "sortDesc": true,
@@ -75,7 +75,8 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by(pod, namespace) (rate(container_cpu_usage_seconds_total{pod!=\"\"}[2m]))",
+              "expr": "sum by(pod, namespace) (container_spec_cpu_shares{pod!=\"\", container=\"\"}) / 1024 * 1000",
+              "hide": false,
               "interval": "",
               "legendFormat": "{{pod}}.{{namespace}}",
               "refId": "A"
@@ -85,7 +86,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "cpu",
+          "title": "cpu shares per pod",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -102,7 +103,7 @@ data:
           "yaxes": [
             {
               "$$hashKey": "object:645",
-              "format": "s",
+              "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -111,6 +112,105 @@ data:
             },
             {
               "$$hashKey": "object:646",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "hiddenSeries": false,
+          "id": 20,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum by(pod, namespace) (container_spec_memory_limit_bytes{pod!=\"\", container=\"\"})",
+              "interval": "",
+              "legendFormat": "{{pod}}.{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "memory limits per pod",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:214",
+              "format": "decbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:215",
               "format": "short",
               "label": null,
               "logBase": 1,
