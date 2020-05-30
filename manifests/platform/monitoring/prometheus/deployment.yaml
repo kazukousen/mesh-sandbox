@@ -55,5 +55,5 @@ spec:
         pullPolicy: IfNotPresent
       persistentVolume:
         enabled: true
-        size: 1Gi
+        size: 20Gi
       retention: "7d"
