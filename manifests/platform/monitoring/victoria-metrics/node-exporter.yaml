@@ -1,0 +1,28 @@
+# https://github.com/helm/charts/tree/master/stable/prometheus-node-exporter
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: node-exporter
+  namespace: monitoring
+spec:
+  helmVersion: v3
+  releaseName: node-exporter
+  targetNamespace: monitoring
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    name: prometheus-node-exporter
+    version: 1.10.0
+    appVersion: 1.0.0
+  values:
+    service:
+      type: ClusterIP
+      port: 9100
+      targetPort: 9100
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 30Mi
