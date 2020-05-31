@@ -1,0 +1,24 @@
+# https://github.com/VictoriaMetrics/helm-charts/tree/master/charts/victoria-metrics-cluster
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: victoria-metrics
+  namespace: monitoring
+spec:
+  helmVersion: v3
+  releaseName: vm
+  targetNamespace: monitoring
+  chart:
+    repository: https://victoriametrics.github.io/helm-charts/
+    name: victoria-metrics-cluster
+    version: 0.5.9
+    appVersion: 1.36.2
+  values:
+    vminsert:
+      enabled: true
+      replicaCount: 1
+    vmstorage:
+      enabled: true
+      persistentVolume:
+        enabled: true
+        size: 20Gi

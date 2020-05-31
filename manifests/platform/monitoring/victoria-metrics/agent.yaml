@@ -1,0 +1,28 @@
+# https://github.com/VictoriaMetrics/helm-charts/tree/master/charts/victoria-metrics-agent
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: vm-agent
+  namespace: monitoring
+spec:
+  helmVersion: v3
+  targetNamespace: monitoring
+  chart:
+    repository: https://victoriametrics.github.io/helm-charts/
+    name: victoria-metrics-agent
+    version: 0.3.7
+    appVersion: v1.36.2
+  values:
+    replicaCount: 1
+    remoteWriteUrls:
+    - http://vm-victoria-metrics-cluster-vminsert.monitoring.svc.cluster.local:8480/insert/0/prometheus
+    resources:
+      limits:
+        cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    config:
+      global:
+        scrape_interval: 10s
