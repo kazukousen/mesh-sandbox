@@ -24,7 +24,7 @@ data:
             "enable": true,
             "expr": "{job=\"monitoring/monitoring-chaoskube\"}",
             "hide": false,
-            "iconColor": "rgba(255, 96, 96, 1)",
+            "iconColor": "#B877D9",
             "limit": 100,
             "name": "chaos",
             "showIn": 0,
