@@ -34,11 +34,11 @@ spec:
       enabled: true
       resources:
         limits:
-          cpu: 200m
+          cpu: 100m
           memory: 50Mi
         requests:
           cpu: 100m
-          memory: 30Mi
+          memory: 50Mi
     service:
       annotations:
         prometheus.io/scrape: "true"
