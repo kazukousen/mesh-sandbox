@@ -55,9 +55,6 @@ spec:
         - timestamp:
             format: RFC3339
             source: timestamp
-        - labels:
-            target_name: ""
-            target_namespace: ""
         - output:
-            source: msg
+            source: name
 
