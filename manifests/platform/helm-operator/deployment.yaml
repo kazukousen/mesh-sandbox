@@ -6,7 +6,7 @@ metadata:
   name: helm-operator
   namespace: kube-system
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       name: helm-operator
@@ -42,10 +42,11 @@ spec:
           timeoutSeconds: 5
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 64Mi
           limits:
-            cpu: 200m
+            cpu: 1
+            memory: 2Gi
         volumeMounts:
         args:
         # Comment out to enable a single Helm version that can be targeted
