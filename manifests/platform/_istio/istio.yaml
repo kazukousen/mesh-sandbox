@@ -1,0 +1,147 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  addonComponents:
+    grafana:
+      enabled: false
+      k8s:
+        replicaCount: 1
+    istiocoredns:
+      enabled: false
+    kiali:
+      enabled: false
+      k8s:
+        replicaCount: 1
+    prometheus:
+      enabled: true
+      k8s:
+        replicaCount: 1
+    tracing:
+      enabled: false
+  components:
+    base:
+      enabled: true
+    ingressGateways:
+    - enabled: true
+      k8s:
+        env:
+        - name: ISTIO_META_ROUTER_MODE
+          value: sni-dnat
+        hpaSpec:
+          maxReplicas: 5
+          metrics:
+          - resource:
+              name: cpu
+              targetAverageUtilization: 80
+            type: Resource
+          minReplicas: 1
+          scaleTargetRef:
+            apiVersion: apps/v1
+            kind: Deployment
+            name: istio-ingressgateway
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        service:
+          type: NodePort
+          ports:
+          - name: status-port
+            port: 15020
+            targetPort: 15020
+          - name: http2
+            port: 80
+            targetPort: 80
+            nodePort: 30080
+          - name: https
+            port: 443
+          - name: kiali
+            port: 15029
+            targetPort: 15029
+          - name: prometheus
+            port: 15030
+            targetPort: 15030
+          - name: grafana
+            port: 15031
+            targetPort: 15031
+          - name: tracing
+            port: 15032
+            targetPort: 15032
+          - name: tls
+            port: 15443
+            targetPort: 15443
+          - name: tcp
+            port: 31400
+        strategy:
+          rollingUpdate:
+            maxSurge: 100%
+            maxUnavailable: 25%
+      name: istio-ingressgateway
+    pilot:
+      enabled: true
+      k8s:
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        strategy:
+          rollingUpdate:
+            maxSurge: 100%
+            maxUnavailable: 25%
+    policy:
+      enabled: false
+      k8s:
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        hpaSpec:
+          maxReplicas: 5
+          metrics:
+          - resource:
+              name: cpu
+              targetAverageUtilization: 80
+            type: Resource
+          minReplicas: 1
+          scaleTargetRef:
+            apiVersion: apps/v1
+            kind: Deployment
+            name: istio-policy
+        strategy:
+          rollingUpdate:
+            maxSurge: 100%
+            maxUnavailable: 25%
+    sidecarInjector:
+      enabled: false
+      k8s:
+        replicaCount: 1
+        strategy:
+          rollingUpdate:
+            maxSurge: 100%
+            maxUnavailable: 25%
+  hub: docker.io/istio
+  profile: default
+  tag: 1.5.4
