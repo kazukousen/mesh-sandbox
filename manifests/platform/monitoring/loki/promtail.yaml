@@ -1,3 +1,4 @@
+# https://github.com/grafana/loki/tree/master/production/helm/promtail
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
@@ -10,6 +11,11 @@ spec:
     name: promtail
     version: 0.23.0
   values:
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - key: loadtest
+      operator: Exists
     image:
       repository: grafana/promtail
       tag: 1.5.0

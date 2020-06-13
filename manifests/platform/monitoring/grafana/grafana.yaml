@@ -1,3 +1,4 @@
+# https://github.com/helm/charts/tree/master/stable/grafana
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
@@ -13,6 +14,7 @@ spec:
     adminPassword: admin
     service:
       type: NodePort
+      nodePort: 30000
     image:
       repository: grafana/grafana
       tag: 7.0.0
@@ -20,9 +22,9 @@ spec:
       datasources.yaml:
         apiVersion: 1
         datasources:
-        - name: Prometheus
+        - name: prometheus
           type: prometheus
-          url: http://monitoring-prometheus-server.monitoring.svc.cluster.local:80
+          url: http://vm-victoria-metrics-cluster-vmselect.monitoring.svc.cluster.local:8481/select/0/prometheus
           # access: proxy
           isDefault: true
         - name: Loki
@@ -57,6 +59,14 @@ spec:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/container
+        - name: 'monitoring'
+          orgId: 1
+          folder: 'app'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/monitoring
     extraConfigmapMounts:
     - name: dashboard-server-configmap
       configMap: grafana-dashboard-server
@@ -69,4 +79,8 @@ spec:
     - name: dashboard-container-configmap
       configMap: grafana-dashboard-container
       mountPath: /var/lib/grafana/dashboards/container
+      readOnly: true
+    - name: dashboard-monitoring-configmap
+      configMap: grafana-dashboard-monitoring
+      mountPath: /var/lib/grafana/dashboards/monitoring
       readOnly: true

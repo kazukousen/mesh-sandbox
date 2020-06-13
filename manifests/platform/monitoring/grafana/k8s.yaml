@@ -18,32 +18,6 @@ data:
             "name": "Annotations & Alerts",
             "showIn": 0,
             "type": "dashboard"
-          },
-          {
-            "datasource": "Loki",
-            "enable": true,
-            "expr": "{job=\"monitoring/monitoring-chaoskube\"}",
-            "hide": false,
-            "iconColor": "#B877D9",
-            "limit": 100,
-            "name": "chaos",
-            "showIn": 0,
-            "tags": [],
-            "target": {},
-            "type": "tags"
-          },
-          {
-            "datasource": "Loki",
-            "enable": true,
-            "expr": "{event_type=~\"Warning|Error\"}",
-            "hide": false,
-            "iconColor": "rgba(255, 96, 96, 1)",
-            "limit": 100,
-            "name": "event warning",
-            "showIn": 0,
-            "tags": [],
-            "target": {},
-            "type": "tags"
           }
         ]
       },
@@ -57,7 +31,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -156,7 +130,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -255,7 +229,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -355,7 +329,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -455,7 +429,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -554,7 +528,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -652,7 +626,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -756,7 +730,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -860,7 +834,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -979,5 +953,7 @@ data:
         ]
       },
       "timezone": "",
-      "title": "k8s"
+      "title": "k8s",
+      "uid": "k8s",
+      "version": 1
     }

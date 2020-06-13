@@ -29,7 +29,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -130,7 +130,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -229,7 +229,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -329,7 +329,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -375,9 +375,9 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by(pod, namespace) (container_memory_working_set_bytes{pod!=\"\"})",
+              "expr": "sum by(pod, namespace) (container_memory_working_set_bytes{pod!=\"\", image!=\"\"})\n",
               "interval": "",
-              "legendFormat": "{{pod}}.{{namespace}}",
+              "legendFormat": "{{pod}}.{{name}}",
               "refId": "B"
             }
           ],
@@ -429,7 +429,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -452,7 +452,6 @@ data:
             "current": true,
             "max": true,
             "min": false,
-            "rightSide": true,
             "show": true,
             "sort": "current",
             "sortDesc": true,
@@ -475,9 +474,9 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by(container) (container_fs_writes_bytes_total{container!=\"\"})",
+              "expr": "sum by(pod, namespace) (rate(container_fs_writes_bytes_total{pod!=\"\"}[2m]))",
               "interval": "",
-              "legendFormat": "{{container}}",
+              "legendFormat": "{{pod}}.{{namespace}}",
               "refId": "A"
             }
           ],
@@ -485,7 +484,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "disk utilization",
+          "title": "filesystem writes bytes",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -501,8 +500,8 @@ data:
           },
           "yaxes": [
             {
-              "$$hashKey": "object:1362",
-              "format": "decbytes",
+              "$$hashKey": "object:389",
+              "format": "Bps",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -510,7 +509,7 @@ data:
               "show": true
             },
             {
-              "$$hashKey": "object:1363",
+              "$$hashKey": "object:390",
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -529,7 +528,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -541,19 +540,20 @@ data:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 0,
-            "y": 24
+            "x": 12,
+            "y": 16
           },
           "hiddenSeries": false,
-          "id": 16,
+          "id": 24,
           "legend": {
             "alignAsTable": true,
             "avg": false,
             "current": true,
             "max": true,
             "min": false,
-            "rightSide": true,
             "show": true,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
             "values": true
           },
@@ -573,9 +573,9 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "histogram_quantile(0.99, sum by(status_code, le) (rate(loki_request_duration_seconds_bucket[2m])))",
+              "expr": "sum by(pod, namespace) (rate(container_fs_reads_bytes_total{pod!=\"\"}[2m]))",
               "interval": "",
-              "legendFormat": "{{status_code}}",
+              "legendFormat": "{{pod}}.{{namespace}}",
               "refId": "A"
             }
           ],
@@ -583,7 +583,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Loki request duration seconds p99",
+          "title": "filesystem reads bytes",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -599,8 +599,8 @@ data:
           },
           "yaxes": [
             {
-              "$$hashKey": "object:212",
-              "format": "s",
+              "$$hashKey": "object:389",
+              "format": "Bps",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -608,7 +608,219 @@ data:
               "show": true
             },
             {
-              "$$hashKey": "object:213",
+              "$$hashKey": "object:390",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 24
+          },
+          "hiddenSeries": false,
+          "id": 26,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "topk(10, sum by(pod, namespace) (rate(container_network_receive_bytes_total{pod!=\"\"}[2m])))",
+              "interval": "",
+              "legendFormat": "{{pod}}.{{namespace}}",
+              "refId": "A"
+            },
+            {
+              "expr": "",
+              "interval": "",
+              "legendFormat": "",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "network receive bytes (Top 10)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:546",
+              "format": "Bps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:547",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 24
+          },
+          "hiddenSeries": false,
+          "id": 28,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "topk(10, sum by(pod, namespace) (rate(container_network_transmit_bytes_total{pod!=\"\"}[2m])))",
+              "interval": "",
+              "legendFormat": "{{pod}}.{{namespace}}",
+              "refId": "A"
+            },
+            {
+              "expr": "",
+              "interval": "",
+              "legendFormat": "",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "network transmit bytes (Top 10)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:546",
+              "format": "Bps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:547",
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -648,5 +860,7 @@ data:
         ]
       },
       "timezone": "",
-      "title": "container"
+      "title": "container",
+      "uid": "container",
+      "version": 1
     }
